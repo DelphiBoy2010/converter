@@ -28,14 +28,13 @@ async function balad(object) {
       });
       //mainLinks.splice(2, 20);
       // console.log('main links', mainLinks);
+      let i = 0;
       for (const linkURL of mainLinks) {
+        i++;
         const itemUrl = object.siteURL + linkURL;
+        console.log('item url',i,':', itemUrl);
         await driver.get(itemUrl);
         await driver.sleep(process.env.LOADING_TIME);
-        //const items = await getAllElementsByClassName(driver, "BundleItem_item__content__3l8hl");
-        //await driver.sleep(process.env.PROFILE_WAIT);
-        //await items[0].click();
-        //await driver.sleep(process.env.PROFILE_WAIT);
         const title = await getElementByTypeClassName(driver, "h1", "DetailsHeader_title__153Y2");
         const titleText = await title.getText();
         const address = await getElementByTypeClassName(driver, "p", "DynamicFields_text__36H36");
