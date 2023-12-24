@@ -34,11 +34,11 @@ async function runAutomation() {
   //await logDebug(["arrayLog", arrayLog]);
   //const fileName = tests.name+'-'+tests.cat+'-'+tests.city;
   //await writeToJSONFile(fileName, arrayLog[0].jsonResult);
-  try {
-    await sendEmail(arrayLog);
-  } catch (error) {
-    console.error("Error in sendEmail:", error);
-  }
+  // try {
+  //   await sendEmail(arrayLog);
+  // } catch (error) {
+  //   console.error("Error in sendEmail:", error);
+  // }
 }
 
 runAutomation();
