@@ -32,7 +32,7 @@ async function balad(object) {
       for (const linkURL of mainLinks) {
         i++;
         const itemUrl = object.siteURL + linkURL;
-        console.log('item url',i,':', itemUrl);
+        console.log('item url',i,':',new Date(),':', itemUrl);
         await driver.get(itemUrl);
         await driver.sleep(process.env.LOADING_TIME);
         const title = await getElementByTypeClassName(driver, "h1", "DetailsHeader_title__153Y2");
@@ -60,11 +60,12 @@ async function balad(object) {
     }
     log = {...log, result: 'success'}
 
-    const fileName = object.name+'-'+object.cat+'-'+object.city+'-'+object.firstPage+'.json';
-    await writeToJSONFile(fileName, JSON.stringify(log.jsonResult));
   } finally {
     await driver.close();
     await driver.quit();
+
+    const fileName = object.name+'-'+object.cat+'-'+object.city+'-'+object.firstPage+'.json';
+    await writeToJSONFile(fileName, JSON.stringify(log.jsonResult));
   }
   return log;
 }
