@@ -69,5 +69,66 @@ async function balad(object) {
   }
   return log;
 }
-
-module.exports = balad;
+async function balad2(object) {
+  const jsonResult = [];
+  const fileName = object.name+'-'+object.cat+'-'+object.city+'-'+object.firstPage+'.json';
+  try {
+    for(var pageNumber = object.firstPage; pageNumber < object.lastPage + 1 ;pageNumber++ ) {
+      console.log('pageNumber', pageNumber);
+      const mainURL = object.url + pageNumber;
+      const htmlContent = await fetchGetData(mainURL);
+      const $ = cheerio.load(htmlContent);
+      // Find all <a> tags with the specified class
+      const tempLinks = $('a.BundleItem_item__content__3l8hl');
+      const mainLinks = [];
+      tempLinks.each((index, element) => {
+        const href = $(element).attr('href');
+        mainLinks.indexOf(href) === -1 ? mainLinks.push(href) : '';
+      });
+      mainLinks.splice(2, 20);
+      // console.log('main links', mainLinks);
+      let i = 0;
+      for (const linkURL of mainLinks) {
+        i++;
+        const itemUrl = object.siteURL + linkURL;
+        console.log('item url',i,':',new Date(),':', itemUrl);
+        let resultObject;
+        const itemHtmlContent = await fetchGetData(itemUrl);
+        const $ = cheerio.load(itemHtmlContent);
+        // Find all <a> tags with the specified class
+        const itemJson = $('script#__NEXT_DATA__');
+        let itemData = JSON.parse(itemJson[0]?.children[0]?.data);
+        if(itemData){
+          itemData = itemData.props.pageProps.data.poi;
+          const title = itemData?.name;
+          const seoDetails = itemData?.seoDetails;
+          const categoryText = itemData?.category;
+          const fields = itemData?.fields;
+          resultObject = {
+            itemUrl,
+            itemData,
+            title,
+            categoryText,
+            seoDetails,
+            fields,
+            category: object.cat,
+            city: object.city
+          };
+        }else{
+          console.log('item json is null', pageNumber, i);
+          resultObject ={error:'item json is null',
+          pageNumber,
+          i,
+          itemUrl}
+        }
+        jsonResult.push(resultObject);
+      }
+    }
+  } finally {
+    await writeToJSONFile(fileName, JSON.stringify(jsonResult));
+  }
+  return {jsonResult, fileName};
+}
+module.exports = {
+  balad,
+  balad2};
