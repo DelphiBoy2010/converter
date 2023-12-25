@@ -85,7 +85,7 @@ async function balad2(object) {
         const href = $(element).attr('href');
         mainLinks.indexOf(href) === -1 ? mainLinks.push(href) : '';
       });
-      mainLinks.splice(2, 20);
+      //mainLinks.splice(2, 20);
       // console.log('main links', mainLinks);
       let i = 0;
       for (const linkURL of mainLinks) {
