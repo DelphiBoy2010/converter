@@ -104,9 +104,10 @@ async function balad2(object) {
           const seoDetails = itemData?.seoDetails;
           const categoryText = itemData?.category;
           const fields = itemData?.fields;
+          const token = itemData?.token;
           resultObject = {
             itemUrl,
-            itemData,
+            token,
             title,
             categoryText,
             seoDetails,
