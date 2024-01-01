@@ -5,6 +5,7 @@ const mysql = require('mysql');
 async function insertData(newObjects) {
     let con;
     let connection;
+    let result;
     const dbMode = process.env.DB_Mode;
     try {
         if(dbMode === 'mariadb'){
@@ -38,14 +39,14 @@ async function insertData(newObjects) {
                 item?.GenderID,item?.Telegram,
                 item?.Aparat,item?.businessID,item?.searchKeys, item?.IsUpdated];
             if(dbMode === 'mariadb'){
-                const result = await con.query(query, values);
+                result = await con.query(query, values);
             }else{
-                const result = await connection.query(query, values);
+                result = await connection.query(query, values);
             }
         }
+        console.log('result', result)
     } catch (error) {
         console.error('Error inserting data:', error);
-
     } finally {
         if(dbMode === 'mariadb'){
             await con.end();
@@ -112,8 +113,8 @@ async function transferData(filePath) {
         const GenderID = 0;
         const Telegram = '';
         const Aparat = '';
-        //const businessID =jsonItem?.itemData?.token;
-        const businessID = jsonItem?.seoDetails?.schemas[0]?.identifier;
+        const businessID =jsonItem?.itemData?.token;
+        //const businessID = jsonItem?.seoDetails?.schemas[0]?.identifier;
         // const Tag = 'balad-resturant-tehran';
         const Tag = businessID;
         const searchKeys = jsonItem?.categoryText;
@@ -124,5 +125,6 @@ async function transferData(filePath) {
             ExtraCommentHide, Tag, GenderID, Telegram, Aparat, businessID, searchKeys, IsUpdated});
     }
     await insertData(newObjects);
+    return true;
 }
 module.exports = transferData;
