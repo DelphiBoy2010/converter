@@ -1,18 +1,29 @@
 const fs = require("fs");
 const mariadb = require("mariadb");
+const mysql = require('mysql');
 
 async function insertData(newObjects) {
     let con;
     try {
-        const pool = await mariadb.createPool({
+        // const pool = await mariadb.createPool({
+        //     host: process.env.DB_Host,
+        //     user: process.env.DB_User,
+        //     password: process.env.DB_Password,
+        //     port: process.env.DB_Port,
+        //     database: process.env.DB_Name,
+        //     connectionLimit: 5
+        // });
+        // con = await pool.getConnection();
+
+        const pool = await mysql.createPool({
             host: process.env.DB_Host,
             user: process.env.DB_User,
             password: process.env.DB_Password,
-            port: process.env.DB_Port,
             database: process.env.DB_Name,
             connectionLimit: 5
         });
         con = await pool.getConnection();
+
         // const query = "INSERT INTO wpas_tbl_item (Title, Category, Province_ID, UserID, BusinessID, Code) " +
         //     "VALUES ('hi', 1, 2, 3, '123',222)";
         //const result = await con.query(query);
