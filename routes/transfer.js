@@ -4,6 +4,7 @@ const mysql = require('mysql');
 
 async function insertData(newObjects) {
     let con;
+    let connection;
     try {
         // const pool = await mariadb.createPool({
         //     host: process.env.DB_Host,
@@ -15,14 +16,13 @@ async function insertData(newObjects) {
         // });
         // con = await pool.getConnection();
 
-        const pool = await mysql.createPool({
+        connection = await mysql.createConnection({
             host: process.env.DB_Host,
             user: process.env.DB_User,
             password: process.env.DB_Password,
             database: process.env.DB_Name,
-            connectionLimit: 5
         });
-        con = await pool.getConnection();
+        await connection.connect();
 
         // const query = "INSERT INTO wpas_tbl_item (Title, Category, Province_ID, UserID, BusinessID, Code) " +
         //     "VALUES ('hi', 1, 2, 3, '123',222)";
@@ -33,7 +33,7 @@ async function insertData(newObjects) {
                 "Instagram, Whatsapp, Email, WebSite, Mobile, PostCode, Latitude, Longitude,\n" +
                 "ExtraCommentHide, Tag, GenderID, Telegram, Aparat, businessID, searchKeys) " +
                 "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-            const result = await con.query(query, [item?.Title,item?.UserID,item?.PreCode,
+            const result = await connection.query(query, [item?.Title,item?.UserID,item?.PreCode,
                 item?.Province_ID,item?.Category,item?.Phone,item?.Address,
                 item?.Instagram,item?.Whatsapp,item?.Email,item?.WebSite,item?.Mobile,
                 item?.PostCode,item?.Latitude,item?.Longitude,item?.ExtraCommentHide,item?.Tag,
@@ -45,7 +45,8 @@ async function insertData(newObjects) {
         console.error('Error inserting data:', error);
 
     } finally {
-        await con.end();
+        // await con.end();
+        await connection.end();
     }
 }
 async function transferData(filePath) {
