@@ -2,6 +2,7 @@ const fs = require("fs");
 const mariadb = require("mariadb");
 
 async function insertData(newObjects) {
+    let con;
     try {
         const pool = await mariadb.createPool({
             host: process.env.DB_Host,
@@ -11,7 +12,7 @@ async function insertData(newObjects) {
             database: process.env.DB_Name,
             connectionLimit: 5
         });
-        const con = await pool.getConnection();
+        con = await pool.getConnection();
         // const query = "INSERT INTO wpas_tbl_item (Title, Category, Province_ID, UserID, BusinessID, Code) " +
         //     "VALUES ('hi', 1, 2, 3, '123',222)";
         //const result = await con.query(query);
