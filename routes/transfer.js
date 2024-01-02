@@ -64,9 +64,9 @@ async function transferData(filePath) {
     for (const jsonItem of jsonObject) {
         const Title = jsonItem?.title;
         const UserID = 1;
-        const PreCode = '021';
-        const Province_ID = 1;
-        const Category = 67;
+        const PreCode = process.env.PreCode;
+        const Province_ID = process.env.Province_ID;
+        const Category = process.env.Category;
         //const Phone = jsonItem?.seoDetails?.schemas[0]?.address?.telephone;
         let Phone = '';
         let Address = '';
