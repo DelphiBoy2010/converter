@@ -113,7 +113,7 @@ async function transferData(filePath) {
         const GenderID = 0;
         const Telegram = '';
         const Aparat = '';
-        const businessID =jsonItem?.itemData?.token;
+        const businessID =jsonItem?.token;
         //const businessID = jsonItem?.seoDetails?.schemas[0]?.identifier;
         // const Tag = 'balad-resturant-tehran';
         const Tag = businessID;
